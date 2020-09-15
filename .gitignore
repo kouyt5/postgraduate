@@ -123,3 +123,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ML
+*.pt
+*.gz
+# minist
+*-ubyte
