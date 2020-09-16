@@ -52,19 +52,13 @@ test_transform = torchvision.transforms.Compose([
 minist_datasets_train = torchvision.datasets.MNIST(DATA_ROOT, train=True,
                                                    transform=train_transform,
                                                    target_transform=None,
-                                                   download=True)
-minist_datasets_train_test = torchvision.datasets.MNIST(DATA_ROOT, train=True,
-                                                   transform=test_transform,
-                                                   target_transform=None,
-                                                   download=True)                                                   
+                                                   download=True)                                                
 minist_datasets_test = torchvision.datasets.MNIST(DATA_ROOT, train=False,
                                                   transform=test_transform,
                                                   target_transform=None,
                                                   download=True)
 train_dataloader = torch.utils.data.DataLoader(
     minist_datasets_train, batch_size=128, shuffle=True)
-train_dataloader2 = torch.utils.data.DataLoader(
-    minist_datasets_train_test, batch_size=128, shuffle=False)
 test_dataloader = torch.utils.data.DataLoader(
     minist_datasets_test, batch_size=128, shuffle=False)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -94,7 +88,6 @@ for j in range(15):
             predict_list.clear()
             true_List.clear()
     test_acc = test(model, test_dataloader)
-    train_acc = test(model, train_dataloader2)
     if test_acc >best_acc:
         checkpoint = {
             "model" : model.state_dict(),
