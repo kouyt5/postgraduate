@@ -40,7 +40,7 @@ CKECKPOINT_ROOT = os.path.abspath(os.path.join('cource-neural-network',
 if not os.path.exists(CKECKPOINT_ROOT):
     os.makedirs(CKECKPOINT_ROOT)
 train_transform = torchvision.transforms.Compose([
-    torchvision.transforms.RandomCrop((24,24)), #.CenterCrop((24, 24))
+    # torchvision.transforms.RandomCrop((24,24)), #.CenterCrop((24, 24))
     torchvision.transforms.Resize((28, 28)),
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize([0.5], [0.5])
@@ -72,10 +72,10 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = CnnModel().to(device=device)
 optim = torch.optim.SGD(model.parameters(), lr=1e-3,
                         momentum=0.9, weight_decay=1e-5)
-sch = torch.optim.lr_scheduler.StepLR(optim, 15, gamma=0.1)
+sch = torch.optim.lr_scheduler.StepLR(optim, 5, gamma=0.1)
 cri = torch.nn.CrossEntropyLoss()
 best_acc = 0.
-for j in range(50):
+for j in range(15):
     model.train()
     predict_list = []
     true_List = []
