@@ -37,9 +37,50 @@ class LinerModel(nn.Module):
         # out = nn.Softmax(dim=-1)(out)
         return out
 
+
+class CnnModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.drop_rate = 0.2
+        self.cnn = nn.Sequential(
+            nn.Conv2d(1,64,3,stride=1,padding=1),
+            nn.BatchNorm2d(64),
+            nn.PReLU(),
+            nn.Dropout(p=self.drop_rate),
+
+            nn.Conv2d(64,256,3,stride=2,padding=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+            nn.Dropout(p=self.drop_rate),
+
+            nn.Conv2d(256,512,3,stride=2,padding=1),
+            nn.BatchNorm2d(512),
+            nn.ReLU(),
+            nn.Dropout(p=self.drop_rate),
+
+            nn.Conv2d(512,1024,3,stride=2,padding=1),
+            nn.BatchNorm2d(1024),
+            nn.ReLU(),
+            nn.Dropout(p=self.drop_rate),
+
+            nn.Conv2d(1024,256,3,stride=2,padding=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+            nn.Dropout(p=self.drop_rate),
+        )
+
+        self.linear = nn.Linear(256*2*2,10)
+
+    def forward(self,x):
+        out = self.cnn(x)
+        out = out.view(out.size(0),out.size(1)*out.size(2)*out.size(3))
+        out = self.linear(out)
+        return out
+
 if __name__ == "__main__":
     x = torch.randn([8,1,28,28])
-    model = LinerModel(28,28)
+    # model = LinerModel(28,28)
+    model = CnnModel()
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
     out = model(x.to(device))
