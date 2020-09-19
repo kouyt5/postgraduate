@@ -5,7 +5,6 @@ import tqdm
 from Model import LinerModel,CnnModel
 from sklearn import metrics
 
-
 def get_pair(predict, true):
     y = torch.argmax(predict, dim=-1)
     y_list = y.cpu().numpy().tolist()
@@ -38,7 +37,7 @@ CKECKPOINT_ROOT = os.path.abspath(os.path.join('cource-neural-network',
 if not os.path.exists(CKECKPOINT_ROOT):
     os.makedirs(CKECKPOINT_ROOT)
 train_transform = torchvision.transforms.Compose([
-    torchvision.transforms.RandomCrop((24,24)), #.CenterCrop((24, 24))
+    #torchvision.transforms.RandomCrop((24,24)), #.CenterCrop((24, 24))
     torchvision.transforms.Resize((28, 28)),
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize([0.5], [0.5])

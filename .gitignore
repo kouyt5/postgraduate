@@ -129,4 +129,5 @@ dmypy.json
 *.gz
 # minist
 *-ubyte
-*/tmp/*
+tmp*.jpg
+.vscode/

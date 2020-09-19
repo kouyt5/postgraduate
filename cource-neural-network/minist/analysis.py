@@ -2,7 +2,7 @@ import torch
 import torchvision
 from PIL import Image
 import os
-from Model import LinerModel
+from Model import LinerModel,CnnModel
 from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,7 +19,8 @@ def load_model(model_path: str, device: str) -> torch.nn.Module:
     if not os.path.exists(model_path):
         raise("模型路径不存在")
     checkpoint = torch.load(model_path)
-    model = LinerModel(28, 28).to(device)
+    # model = LinerModel(28, 28).to(device)
+    model = CnnModel().to(device)
     model.load_state_dict(checkpoint['model'])
     return model
 
@@ -87,7 +88,7 @@ def test(model):
                 folder = os.path.join(DATA_ROOT, 'image')
                 if not os.path.exists(folder):
                     os.makedirs(folder)
-                path = os.path.join(folder, str(
+                path = os.path.join(folder, 'tmp'+str(
                     i)+'-'+str(predit[j])+'-'+str(true[j])+'.jpg')
                 tensor2image(batch[0][j], path)
     out = np.argmax(array, axis=-1)
@@ -103,4 +104,5 @@ if __name__ == "__main__":
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = load_model(model_path, device)
     summary(model,(1,28,28),device=device.type,col_names=["kernel_size", "output_size", "num_params", "mult_adds"])
+    test_all(model)
     test(model)
