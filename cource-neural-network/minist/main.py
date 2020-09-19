@@ -29,7 +29,7 @@ def test(model, dataloader):
         optim.step()
         total_loss += loss.item()
     acc = metrics.accuracy_score(predict_list, true_List)
-    print("****test loss"+str(total_loss/i)+" acc: "+str(acc)+"****")
+    print("****test loss"+str('%.3f' % (total_loss/i))+" acc: "+str(acc)+"****")
     return acc
 
 
@@ -66,10 +66,10 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = CnnModel().to(device=device)
 optim = torch.optim.SGD(model.parameters(), lr=1e-3,
                         momentum=0.9, weight_decay=1e-5)
-sch = torch.optim.lr_scheduler.StepLR(optim, 5, gamma=0.1)
+sch = torch.optim.lr_scheduler.StepLR(optim, 10, gamma=0.1)
 cri = torch.nn.CrossEntropyLoss()
 best_acc = 0.
-for j in range(15):
+for j in range(30):
     model.train()
     predict_list = []
     true_List = []
@@ -84,7 +84,7 @@ for j in range(15):
         optim.step()
         if i % 50 == 0:
             acc = metrics.accuracy_score(predict_list, true_List)
-            print("epoch"+str(j)+" loss="+str(loss.item())+" acc: "+str(acc))
+            print("epoch"+str(j)+" loss="+str('%.3f' % loss.item())+" acc: "+str(acc))
             predict_list.clear()
             true_List.clear()
     test_acc = test(model, test_dataloader)
