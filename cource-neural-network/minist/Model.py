@@ -10,7 +10,7 @@ class LinerModel(nn.Module):
         super().__init__()
         self.drop_rate = 0.2
         self.liner = nn.Sequential(
-            nn.Linear(28*28,1024),
+            nn.Linear(iamge_w*image_h,1024),
             nn.Dropout(p=self.drop_rate),
             nn.PReLU(),
 

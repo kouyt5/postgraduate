@@ -18,15 +18,13 @@ def test(model, dataloader):
     predict_list = []
     true_List = []
     total_loss = 0.
+    cri = torch.nn.CrossEntropyLoss()
     for i, batch in enumerate(dataloader):
         out = model(batch[0].to(device))
         loss = cri(out, batch[1].to(device))
         predit, true = get_pair(out, batch[1].to(device))
         predict_list.extend(predit)
         true_List.extend(true)
-        optim.zero_grad()
-        loss.backward()
-        optim.step()
         total_loss += loss.item()
     acc = metrics.accuracy_score(predict_list, true_List)
     print("****test loss"+str('%.3f' % (total_loss/i))+" acc: "+str(acc)+"****")
@@ -40,7 +38,7 @@ CKECKPOINT_ROOT = os.path.abspath(os.path.join('cource-neural-network',
 if not os.path.exists(CKECKPOINT_ROOT):
     os.makedirs(CKECKPOINT_ROOT)
 train_transform = torchvision.transforms.Compose([
-    # torchvision.transforms.RandomCrop((24,24)), #.CenterCrop((24, 24))
+    torchvision.transforms.RandomCrop((24,24)), #.CenterCrop((24, 24))
     torchvision.transforms.Resize((28, 28)),
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize([0.5], [0.5])
@@ -62,9 +60,9 @@ train_dataloader = torch.utils.data.DataLoader(
 test_dataloader = torch.utils.data.DataLoader(
     minist_datasets_test, batch_size=128, shuffle=False)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-# model = LinerModel(28, 28).to(device=device)
-model = CnnModel().to(device=device)
-optim = torch.optim.SGD(model.parameters(), lr=1e-3,
+model = LinerModel(28, 28).to(device=device)
+# model = CnnModel().to(device=device)
+optim = torch.optim.SGD(model.parameters(), lr=1e-2,
                         momentum=0.9, weight_decay=1e-5)
 sch = torch.optim.lr_scheduler.StepLR(optim, 10, gamma=0.1)
 cri = torch.nn.CrossEntropyLoss()
