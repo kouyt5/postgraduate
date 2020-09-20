@@ -43,7 +43,7 @@ class CnnModel(nn.Module):
         super().__init__()
         self.drop_rate = 0.2
         self.cnn = nn.Sequential(
-            nn.Conv2d(1,64,3,stride=1,padding=1),
+            nn.Conv2d(1,64,3,stride=1,padding=1,dilation=2),
             nn.BatchNorm2d(64),
             nn.PReLU(),
             nn.Dropout(p=self.drop_rate),
@@ -58,12 +58,12 @@ class CnnModel(nn.Module):
             nn.ReLU(),
             nn.Dropout(p=self.drop_rate),
 
-            nn.Conv2d(512,1024,3,stride=2,padding=1),
-            nn.BatchNorm2d(1024),
+            nn.Conv2d(512,512,3,stride=2,padding=1),
+            nn.BatchNorm2d(512),
             nn.ReLU(),
             nn.Dropout(p=self.drop_rate),
 
-            nn.Conv2d(1024,256,3,stride=2,padding=1),
+            nn.Conv2d(512,256,3,stride=2,padding=1),
             nn.BatchNorm2d(256),
             nn.ReLU(),
             nn.Dropout(p=self.drop_rate),

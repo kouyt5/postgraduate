@@ -59,14 +59,14 @@ train_dataloader = torch.utils.data.DataLoader(
 test_dataloader = torch.utils.data.DataLoader(
     minist_datasets_test, batch_size=128, shuffle=False)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model = LinerModel(28, 28).to(device=device)
-# model = CnnModel().to(device=device)
+# model = LinerModel(28, 28).to(device=device)
+model = CnnModel().to(device=device)
 optim = torch.optim.SGD(model.parameters(), lr=1e-2,
                         momentum=0.9, weight_decay=1e-5)
-sch = torch.optim.lr_scheduler.StepLR(optim, 10, gamma=0.1)
+sch = torch.optim.lr_scheduler.StepLR(optim, 5, gamma=0.1)
 cri = torch.nn.CrossEntropyLoss()
 best_acc = 0.
-for j in range(30):
+for j in range(15):
     model.train()
     predict_list = []
     true_List = []
