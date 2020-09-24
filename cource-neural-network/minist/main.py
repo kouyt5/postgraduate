@@ -38,6 +38,7 @@ if not os.path.exists(CKECKPOINT_ROOT):
     os.makedirs(CKECKPOINT_ROOT)
 train_transform = torchvision.transforms.Compose([
     #torchvision.transforms.RandomCrop((24,24)), #.CenterCrop((24, 24))
+    torchvision.transforms.RandomRotation(45),
     torchvision.transforms.Resize((28, 28)),
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize([0.5], [0.5])
